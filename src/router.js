@@ -98,6 +98,20 @@ const router = new VueRouter({
         import('./views/city.vue')
     },
     {
+      //首页搜索商家
+      path: '/search',
+      name: 'search',
+      component: () =>
+        import('./views/search.vue')
+    },
+    {
+      //商家详情页面
+      path: '/shopDetail/:id',
+      name: 'shopDetail',
+      component: () =>
+        import('./views/shopDetail.vue')
+    },
+    {
       path: '*',
       redirect: '/home'
     }

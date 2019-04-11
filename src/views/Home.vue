@@ -21,7 +21,7 @@
       <router-link
         to="/detailCity"
         class="arial"
-      >{{myCity}}</router-link>
+      >{{curCity}}</router-link>
 
     </div>
     <div class="foot-t">
@@ -137,10 +137,10 @@
 </template>
 <script>
 import date from "../api/date.json";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      myCity: "怀化",
       goTop: { display: "none" },
       banner: [
         {
@@ -246,12 +246,30 @@ export default {
   },
   created() {
     this.getInfoList();
+    this.getCityName();
   },
-  mounted() {},
+  //从vuex里面获取城市
+  computed: {
+    ...mapState(["curCity"])
+  },
   methods: {
     //获取数据
     getInfoList() {
       this.list = date;
+    },
+    //页面改变城市信息，触发vuex里面changeCity的方法改变state里面城市信息
+    ...mapMutations(["changeCity"]),
+    //获取定位城市信息
+    getCityName() {
+      // 当前没有城市
+      if (!this.curCity) {
+        // 让他不没有找到的错误
+        /* eslint-disable */
+        var myCity = new BMap.LocalCity();
+        myCity.get(result => {
+          this.changeCity(result.name);
+        });
+      }
     },
     //到顶部
     goPageTop(e) {

@@ -11,7 +11,13 @@
       <div
         class="city"
         @click="goCity()"
-      >{{myCity}} ∨</div>
+      >{{curCity}} ∨</div>
+      <!-- <mt-search
+        v-model="value"
+        cancel-text="取消"
+        placeholder="搜索"
+      >
+      </mt-search> -->
     </div>
     <ul class="all-cinemas">
       <li
@@ -33,21 +39,29 @@
 </template>
 <script>
 import date from "../api/cityDetail.json";
+import {} from "mint-ui";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
       list: "",
-      myCity: ""
+      value: ""
     };
   },
   created() {
     this.getInfoList();
+  },
+  //从vuex里面获取城市
+  computed: {
+    ...mapState(["curCity"])
   },
   methods: {
     //跳转到选择城市页面
     goCity() {
       this.$router.push({ name: "city" });
     },
+    //页面改变城市信息，触发vuex里面changeCity的方法改变state里面城市信息
+    ...mapMutations(["changeCity"]),
     //返回首页
     goBack(name) {
       this.$router.push({ name: "home" });

@@ -6,12 +6,8 @@
         @click="goBack"
         class="iconfont icon-fanhui"
       ></i>
-      当前城市-{{myCity}}
+      当前城市-{{curCity}}
     </header>
-    <!-- <SearchBar
-      placeholder="Search"
-      maxLength={8}
-    /> -->
     <div class="lv-indexlist">
       <ul class="lv-indexlist__content">
         <li
@@ -29,7 +25,7 @@
             <li
               v-for="(item2,index2) in pageCity[index1].city"
               :key="index2"
-              @click="changeCity(item2.name)"
+              @click="selectedCity(item2.name)"
             >
               {{item2.name}}
             </li>
@@ -51,18 +47,73 @@
   </div>
 </template>
 <script>
+import cityName from "../api/cityName.json";
+import { Toast } from "mint-ui";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
       pageCity: [],
+      arr: [],
       myCity: ""
     };
   },
-  created() {},
+  created() {
+    this.getLetter();
+    this.getCity();
+  },
+  //从vuex里面获取城市
+  computed: {
+    ...mapState(["curCity"])
+  },
   methods: {
-    scrollToAnchor() {},
-    changeCity() {},
-    goBack() {}
+    //页面改变城市信息，触发vuex里面changeCity的方法改变state里面城市信息
+    ...mapMutations(["changeCity"]),
+    //锚点定位
+    scrollToAnchor(anchorName) {
+      Toast({
+        message: anchorName,
+        duration: 600
+      });
+      if (anchorName) {
+        // 找到锚点
+        let anchorElement = document.getElementById(anchorName);
+        // 如果对应id的锚点存在，就跳转到锚点
+        if (anchorElement) {
+          anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+      }
+    },
+    // 26字母
+    getLetter() {
+      for (var i = 0; i < 26; i++) {
+        var letter = String.fromCharCode(65 + i);
+        this.arr.push(letter);
+      }
+    },
+    // 城市列表
+    getCity() {
+      //获取城市数据
+      var allCity = cityName.data.cities;
+      for (let i = 0; i < 26; i++) {
+        // eslint-disable-next-line
+        let arr1 = allCity.filter(item => {
+          return item.pinyin.charAt(0) === this.arr[i].toLowerCase();
+        });
+        let obj = { letter: this.arr[i], city: arr1 };
+        if (arr1[0] !== undefined) {
+          this.pageCity.push(obj);
+        }
+      }
+    },
+    //选择城市信息
+    selectedCity(cityname) {
+      this.changeCity(cityname);
+      this.$router.push({ name: "detailCity" });
+    },
+    goBack() {
+      this.$router.push({ name: "detailCity" });
+    }
   }
 };
 </script>
