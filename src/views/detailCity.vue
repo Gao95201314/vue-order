@@ -12,12 +12,15 @@
         class="city"
         @click="goCity()"
       >{{curCity}} ∨</div>
-      <!-- <mt-search
-        v-model="value"
-        cancel-text="取消"
-        placeholder="搜索"
-      >
-      </mt-search> -->
+      <input
+        ref="search"
+        i="search"
+        type="search"
+        class="inp"
+        placeholder="输入地址"
+        @change="search"
+      />
+      <p>搜索</p>
     </div>
     <ul class="all-cinemas">
       <li
@@ -44,13 +47,10 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      list: "",
-      value: ""
+      list: ""
     };
   },
-  created() {
-    this.getInfoList();
-  },
+  created() {},
   //从vuex里面获取城市
   computed: {
     ...mapState(["curCity"])
@@ -66,9 +66,14 @@ export default {
     goBack(name) {
       this.$router.push({ name: "home" });
     },
-    //获取数据
-    getInfoList() {
-      this.list = date;
+    //搜索
+    search() {
+      var arr = date;
+      var myVal = this.$refs["search"].value;
+      var newArr = arr.filter(item => {
+        return item.name.indexOf(myVal) > -1;
+      });
+      this.list = newArr;
     }
   }
 };
@@ -99,31 +104,29 @@ export default {
 
   .search {
     height: px2rem(56);
-    position: relative;
     background: #fff;
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     .city {
+      flex: 1;
       height: px2rem(56);
-      position: absolute;
-      width: px2rem(60);
-      top: 0;
-      left: 0;
       text-align: center;
       line-height: px2rem(56);
       font-size: px2rem(14);
     }
-    .am-search-value {
-      height: 100%;
+    .inp {
+      flex: 4;
+      background-color: #f8f8f8;
+      border: none;
+      height: px2rem(30);
+      padding-left: px2rem(15);
+      font-size: px2rem(15);
+      margin-right: px2rem(17);
+      color: #ccc;
     }
-    .am-search {
-      height: px2rem(56);
-      margin-left: px2rem(56);
-      background: #fff;
-    }
-
-    .am-search-input {
-      height: px2rem(36);
-      background: #f4f4f4;
+    p {
+      flex: 1;
     }
   }
 
