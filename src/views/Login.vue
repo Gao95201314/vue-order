@@ -1,136 +1,198 @@
 <template>
-  <div>
-    <header id="header">
-      <div class="logo"></div>
-      <div class="sj">
-        <input
-          type="text"
-          placeholder="手机号"
-          v-model="phoneInput"
-        >
-        <span>获取验证码</span>
+  <div class="login">
+    <div class="App-1EAON">
+      <div class="App-3Q8Qb">
+        <div class="LoginHeader-1jXn6">
+          <div class="img">
+            <img
+              src='../images/login-logo.jpg'
+              alt=""
+            />
+          </div>
+        </div>
+        <div>
+          <div class="MessageLogin-iYvWA">
+            <section class="MessageLogin-FsPlX">
+              <input
+                type="tel"
+                placeholder="手机号"
+                :value="phone"
+                @change="handleGetInputValue"
+              />
+              <!-- {/* <InputItem type="phone"  placeholder="186 1234 1234" >手机号码</InputItem> */} -->
+              <button
+                class="CountButton-3e-kd"
+                ubt-click="101161"
+                @click="getPhonecode"
+                ref="dis"
+              >
+                {{captchaBtnText}}
+              </button>
+            </section>
+            <section class="MessageLogin-FsPlX">
+              <input
+                type="tel"
+                placeholder="验证码"
+                :value="code"
+                @change="handleGetCodeValue"
+              />
+            </section>
+            <div id="_umfp"></div>
+            <div
+              id="slideVerify"
+              class="nc-container"
+            ></div>
+            <section class="MessageLogin-15xD9">
+              新用户登录即自动注册，并表示已同意
+              <a href="//h5.ele.me/service/agreement/#initTitle=%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE&amp;key=ruleQue18">《用户服务协议》</a>
+            </section>
+            <button
+              class="SubmitButton-2wG4T"
+              @click="login"
+            >
+              登录
+            </button>
+          </div>
+          <div class="MessageLogin-31EIr">关于我们</div>
+        </div>
       </div>
-      <div class="yzm">
-        <input
-          type="text"
-          placeholder="验证码"
-          v-model="codeInput"
-        >
-      </div>
-      <button
-        @click="handleLogin"
-        :disabled="isDisabled"
-      >登录</button>
-    </header>
+    </div>
   </div>
 </template>
 <script>
-import axios from "axios";
-
 export default {
   name: "Login",
   data() {
     return {
-      phoneInput: "",
-      codeInput: ""
+      phone: "",
+      code: "",
+      captchaBtnText: ""
     };
   },
-  computed: {
-    isDisabled() {
-      if (this.phoneInput && this.codeInput) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-  },
+  computed: {},
   methods: {
-    handleLogin() {
-      axios
-        .get("/static/api/user.json", {
-          params: {
-            phone: this.phoneInput,
-            code: this.codeInput
-          }
-        })
-        .then(res => {
-          var result = res.data;
-          console.log(result);
-          let index = -1;
-          let isZai = result.some((item, i) => {
-            if (this.phoneInput === item.phone) {
-              index = i;
-              return true;
-            }
-            return false;
-          });
-          console.log(index);
-          if (isZai) {
-            if (result[index].code === this.codeInput) {
-              localStorage.setItem("userphone", this.phoneInput);
-              // var myNeedPage = localStorage.getItem('myNeedPage')
-              //this.$router.push(redirect);
-              let redirect = this.$route.query.redirect;
-              if (redirect) {
-                this.$router.push(redirect);
-              } else {
-                this.$router.push("/");
-              }
-            } else {
-              console.log("手机号或验证码错误");
-            }
-          }
-        });
-    }
+    //电话号码
+    handleGetInputValue() {},
+    //验证码
+    handleGetCodeValue() {},
+    //登录
+    login() {},
+    //获取验证码
+    getPhonecode() {}
   }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "../styles/common/px2rem.scss";
-#header {
-  height: px2rem(500);
-  display: flex;
-  flex-direction: column;
-  .logo {
-    // flex: 1;
-    width: px2rem(100);
-    height: px2rem(100);
-    background: url(../images/logo.jpg) no-repeat;
-    background-size: 100%;
-    margin: px2rem(100) auto;
+.login {
+  .am-toast-text {
+    position: absolute;
+    bottom: px2rem(100);
+    right: px2rem(100);
+    width: px2rem(170);
+    border-radius: px2rem(20) !important;
   }
-  .sj,
-  .yzm {
+
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  font-family: PingFang SC, Helvetica Neue, Arial, sans-serif;
+  .App-1EAON {
+    height: auto;
+    min-height: 100%;
+    padding-top: px2rem(40);
+    align-items: center;
     display: flex;
-    height: px2rem(55);
-    margin: px2rem(10) px2rem(25);
-    border-bottom: px2rem(1) solid #ccc;
-    input {
-      width: 70%;
-      font-size: px2rem(18);
+    flex-direction: column;
+    width: 100%;
+    .App-3Q8Qb {
+      width: px2rem(300);
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      justify-content: flex-start;
+      .LoginHeader-1jXn6 {
+        text-align: center;
+        img {
+          width: px2rem(140);
+          height: px2rem(56);
+        }
+      }
+    }
+    .App-3Q8Qb > div:last-child {
+      min-height: 296px;
+    }
+  }
+}
+.MessageLogin-iYvWA {
+  margin-top: px2rem(16);
+  .MessageLogin-FsPlX {
+    position: relative;
+    margin-bottom: px2rem(16);
+    height: px2rem(48);
+    font-size: px2rem(14);
+    background: #fff;
+    > input {
+      width: 100%;
+      height: 100%;
+      left: 0;
+      padding-left: px2rem(10);
+      border: px2rem(1) solid #ddd;
+      border-radius: px2rem(4);
+      color: #333;
+      outline: none;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+    }
+    > * {
+      display: inline-block;
+      position: absolute;
+      top: 50%;
+      right: px2rem(10);
+      transform: translateY(-50%);
+    }
+    .CountButton-3e-kd {
+      color: #ccc;
+      padding: 0;
+      border-radius: px2rem(6);
+      background: transparent;
+      text-align: center;
+      font-size: px2rem(14);
+      outline: none;
       border: none;
     }
-    span {
-      width: 30%;
-      font-size: px2rem(18);
-      color: #ccc;
-      display: flex;
-      align-self: center;
-    }
   }
-  button {
-    display: flex;
-    justify-content: center;
-    height: px2rem(80);
-    margin: px2rem(20) px2rem(25);
-    background: #ff5f16;
-    font-size: px2rem(20);
+  .MessageLogin-15xD9 {
+    margin-top: px2rem(12);
+    color: #999;
+    font-size: px2rem(14);
+    line-height: px2rem(20);
+  }
+  .SubmitButton-2wG4T {
+    display: block;
+    width: 100%;
+    height: px2rem(42);
+    margin-top: px2rem(30);
+    border-radius: px2rem(4);
+    background: #4cd96f;
+    color: #fff;
+    cursor: pointer;
     text-align: center;
-    color: white;
-
-    &[disabled] {
-      background: #ccc;
-    }
+    font-size: px2rem(16);
+    line-height: px2rem(42);
+    outline: none;
+    border: none;
   }
+}
+.MessageLogin-31EIr {
+  display: block;
+  margin-top: px2rem(20);
+  text-align: center;
+  color: #999;
+  font-size: px2rem(12);
+}
+.MessageLogin-FsPlX > input:focus {
+  border-color: #0089dc;
 }
 </style>

@@ -27,7 +27,7 @@
         class="cinemas-list-item"
         v-for="(item,index) in list"
         :key="index"
-        @click="goBack(item.short_address)"
+        @click="goBackTo(item.short_address)"
       >
         <div class="cinema-info-lf cinema-info">
           <p class="cinema-name">{{item.name}}</p>
@@ -42,7 +42,7 @@
 </template>
 <script>
 import date from "../api/cityDetail.json";
-import {} from "mint-ui";
+import { Toast } from "mint-ui";
 import { mapState, mapMutations } from "vuex";
 export default {
   data() {
@@ -62,8 +62,17 @@ export default {
     },
     //页面改变城市信息，触发vuex里面changeCity的方法改变state里面城市信息
     ...mapMutations(["changeCity"]),
+    //选择地址后返回首页
+    goBackTo(name) {
+      Toast({
+        message: "选择地址成功",
+        duration: 900
+      });
+      this.$router.push({ name: "home" });
+      localStorage.setItem("address", name);
+    },
     //返回首页
-    goBack(name) {
+    goBack() {
       this.$router.push({ name: "home" });
     },
     //搜索
