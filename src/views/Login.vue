@@ -17,7 +17,7 @@
                 type="tel"
                 placeholder="手机号"
                 :value="phone"
-                @change="handleGetInputValue"
+                @change="handleGetInputValue($event)"
               />
               <!-- {/* <InputItem type="phone"  placeholder="186 1234 1234" >手机号码</InputItem> */} -->
               <button
@@ -31,10 +31,9 @@
             </section>
             <section class="MessageLogin-FsPlX">
               <input
-                type="tel"
                 placeholder="验证码"
                 :value="code"
-                @change="handleGetCodeValue"
+                @blur="handleGetCodeValue($event)"
               />
             </section>
             <div id="_umfp"></div>
@@ -60,25 +59,89 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+import cook from "../utils/cookie";
+import cook2 from "../utils/cookie2";
+import cook3 from "../utils/cookie3";
+import getCookieValue from "../utils/cookie3";
+import { Toast } from "mint-ui";
 export default {
   name: "Login",
   data() {
     return {
       phone: "",
       code: "",
-      captchaBtnText: ""
+      codes: "",
+      captchaBtnText: "获取验证码"
     };
   },
   computed: {},
   methods: {
     //电话号码
-    handleGetInputValue() {},
+    handleGetInputValue(e) {
+      this.phone = e.target.value;
+      if (/^1[34578]\d{9}$/.test(this.phone)) {
+        this.$refs["dis"].style.color = "blue";
+      } else {
+        this.$refs["dis"].style.color = "gray";
+      }
+    },
     //验证码
-    handleGetCodeValue() {},
-    //登录
-    login() {},
+    handleGetCodeValue(e) {
+      this.code = e.target.value;
+    },
     //获取验证码
-    getPhonecode() {}
+    getPhonecode() {
+      if (this.phone === "15111521187") {
+        axios
+          .post("/api/login", { codenum: this.code, phone: this.phone })
+          .then(res => {
+            console.log(res.data.body, "短信发送成功!");
+            this.$refs["dis"].style.color = "gray";
+            this.codes = res.data.body.codes;
+            cook("secondsremained", 60, 60);
+            const countdown = getCookieValue("secondsremained")
+              ? getCookieValue("secondsremained")
+              : 0;
+            if (countdown !== undefined && countdown > 0) {
+              this.settime();
+            }
+          });
+      }
+    },
+    //登录
+    login() {
+      if (
+        this.code === this.codes &&
+        this.phone === "15111521187" &&
+        this.code !== ""
+      ) {
+        this.$router.push("/center");
+        localStorage.setItem("username", this.phone);
+      } else if (this.code === "") {
+        Toast.info("请输入验证码！");
+      } else {
+        Toast.info("验证码错误！！");
+      }
+    },
+    //倒计时
+    settime() {
+      let countdown = 60;
+      countdown = cook3("secondsremained");
+      this.timer = setInterval(() => {
+        if (countdown <= 0) {
+          clearInterval(this.timer);
+          this.captchaBtnText = "重新获取";
+        } else {
+          this.captchaBtnText = `已发送` + countdown + "s";
+          countdown--;
+        }
+        cook2("secondsremained", countdown, countdown + 1);
+      }, 1000);
+    }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   }
 };
 </script>

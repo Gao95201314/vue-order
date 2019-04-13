@@ -4,11 +4,11 @@ import App from './App';
 import router from './router';
 import store from './store';
 import Mint from 'mint-ui';
-// import ElementUI from 'element-ui';
+// import Element from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
-
+// import '@/styles/index.scss' // global css
 Vue.use(Mint);
-// Vue.use(ElementUI);
+// Vue.use(Element);
 // 引入mockjs，！！！上线时要删除
 // import './mockData';
 

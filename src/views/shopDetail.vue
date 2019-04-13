@@ -1,10 +1,17 @@
 <template>
   <div>
-    商品详情页面
+    <common></common>
+
+    <router-view></router-view>
   </div>
 </template>
 <script>
+import evaluate from "@/views/Components/Evaluate.vue";
+import seller from "@/views/Components/Seller.vue";
+import common from "@/views/Components/common.vue";
 export default {
+  name: "shopDetail",
+  components: { evaluate, seller, common },
   data() {
     return {
       shopSid: ""
@@ -19,5 +26,5 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "../styles/common/px2rem.scss";
+@import "@/styles/common/px2rem.scss";
 </style>

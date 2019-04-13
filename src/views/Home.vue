@@ -75,7 +75,7 @@
     </div>
     <div class="rub">
       <router-link
-        to="#"
+        to="/"
         class="same"
       >
         <h3>品质套餐</h3>
@@ -84,7 +84,7 @@
         <img src="https://fuss10.elemecdn.com/d/d4/16ff085900d62b8d60fa7e9c6b65dpng.png?imageMogr/format/webp/thumbnail/!240x160r/gravity/Center/crop/240x160/" />
       </router-link>
       <router-link
-        to="#"
+        to="/"
         class="same"
       >
         <h3 class="red">限量抢购</h3>
@@ -116,7 +116,7 @@
         :key="index"
       >
         <div
-          to="/detail"
+          @click="detailPage(item.sid)"
           class="detail"
         >
           <img
@@ -288,6 +288,10 @@ export default {
       if (anchorElement) {
         anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
       }
+    },
+    detailPage(sid) {
+      this.$router.push("/shopDetail/order");
+      localStorage.setItem("shopId", sid);
     }
   }
 };

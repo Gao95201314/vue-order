@@ -15,6 +15,10 @@ const router = new VueRouter({
         import('./views/Index'),
       children: [
         {
+          path: '',
+          redirect: '/home'
+        },
+        {
           // 首页
           path: '/home',
           name: 'home',
@@ -106,15 +110,32 @@ const router = new VueRouter({
     },
     {
       //商家详情页面
-      path: '/shopDetail/:id',
-      name: 'shopDetail',
+      path: '/shopDetail',
       component: () =>
-        import('./views/shopDetail.vue')
+        import('./views/shopDetail.vue'),
+      children: [{
+        path: '',
+        redirect: '/shopDetail/order'
+      },
+      {
+        path: 'order',
+        name: 'detailorder',
+        component: () =>
+          import('./views/Components/Order/Order.vue')
+      },
+      {
+        path: 'evaluate',
+        name: 'evaluate',
+        component: () =>
+          import('./views/Components/Evaluate.vue')
+      },
+      {
+        path: 'seller',
+        name: 'seller',
+        component: () =>
+          import('./views/Components/Seller.vue')
+      }]
     },
-    {
-      path: '*',
-      redirect: '/home'
-    }
   ]
 });
 
