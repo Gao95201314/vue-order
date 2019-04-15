@@ -25,6 +25,10 @@
         <!-- {/* bad-type-cur选中不满意 */} -->
         <li class='bad-type'>不满意&nbsp;<span>5</span></li>
         <li class=''>有图&nbsp;<span>19</span></li>
+        <li
+          style="color:white;background:#0097ff"
+          @click="addEvaluate"
+        >添加评价</li>
       </ul>
       <p class='only-content'><i class='iconfont icon-dui'></i> 只看有内容的评价</p>
       <!-- {/* 评价列表 */} -->
@@ -90,7 +94,28 @@
   </div>
 </template>
 <script>
-export default {};
+import date from "@/api/date.json";
+export default {
+  data() {
+    return {
+      evaluate: []
+    };
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    getList() {
+      date.forEach(e => {
+        var obj = {};
+        obj.sid = e.sid;
+        this.evaluate.push(obj);
+      });
+      console.log(this.evaluate);
+    },
+    addEvaluate() {}
+  }
+};
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "../px2rem.scss";

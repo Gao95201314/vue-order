@@ -57,7 +57,7 @@
           <div class="zi">另需配送费￥5</div>
         </div>
       </div>
-      <router-link to="/submit">
+      <router-link to="/order">
         <div class="r">去结算</div>
       </router-link>
     </div>
@@ -70,15 +70,18 @@ export default {
     return {
       curTab: 0,
       arr: [],
-      cartList: localStorage.getItem("cartList")
-        ? JSON.parse(localStorage.getItem("cartList"))
-        : [],
-      elemGoods: []
+      cartList: [],
+      elemGoods: [],
+      username: ""
     };
   },
   created() {
     this.getcategory();
     this.getShopDetailList();
+    this.username = localStorage.getItem("username");
+    this.cartList = localStorage.getItem(this.username + "cartList")
+      ? JSON.parse(localStorage.getItem(this.username + "cartList"))
+      : [];
   },
   methods: {
     //锚点定位
@@ -159,13 +162,19 @@ export default {
         // console.log(cartList);
         // console.log(updateData);
         this.cartList = cartList;
-        localStorage.setItem("cartList", JSON.stringify(this.cartList));
+        localStorage.setItem(
+          this.username + "cartList",
+          JSON.stringify(this.cartList)
+        );
       } else {
         // 不存在
         let data2 = this.cartList;
         data2.push(food);
         this.cartList = data2;
-        localStorage.setItem("cartList", JSON.stringify(this.cartList));
+        localStorage.setItem(
+          this.username + "cartList",
+          JSON.stringify(this.cartList)
+        );
       }
     },
 
@@ -193,7 +202,10 @@ export default {
             }
           }
           this.cartList = cartList;
-          localStorage.setItem("cartList", JSON.stringify(this.cartList));
+          localStorage.setItem(
+            this.username + "cartList",
+            JSON.stringify(this.cartList)
+          );
           return false;
         }
         let num = this.cartList[index].num - 1;
@@ -206,7 +218,10 @@ export default {
           }
         }
         this.cartList = cartList;
-        localStorage.setItem("cartList", JSON.stringify(this.state.cartList));
+        localStorage.setItem(
+          this.username + "cartList",
+          JSON.stringify(this.state.cartList)
+        );
       } else {
         return false;
       }

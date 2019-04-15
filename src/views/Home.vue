@@ -133,6 +133,10 @@
         </div>
       </li>
     </ul>
+    <div
+      id="allmap"
+      v-show="false"
+    ></div>
   </div>
 </template>
 <script>

@@ -183,7 +183,7 @@ export default {
     };
   },
   created() {
-    if (localStorage.getItem("username") === "") {
+    if (localStorage.getItem("username") !== "") {
       //   this.$refs["xxoo"].style.display = "none";
       //   this.$refs["aabb"].style.display = "none";
       //   this.$refs["abab"].style.display = "none";
@@ -192,10 +192,8 @@ export default {
       //   this.$refs["ooxx"].style.display = "none";
       //   this.$refs["bbaa"].style.display = "none";
       //   this.$refs["baba"].style.display = "none";
-      let userInfoName = JSON.parse(localStorage.getItem("userInfo"));
       let userName = JSON.parse(localStorage.getItem("username"));
       this.username = userName;
-      this.userInfoUser = userInfoName[0].userName;
     }
   },
   methods: {

@@ -16,6 +16,7 @@
     "element-ui": "^2.7.2",
     "mint-ui": "^2.2.13",
     "mockjs": "^1.0.1-beta3",
+    "moment": "^2.24.0",
     "nprogress": "^0.2.0",
     "swiper": "^4.4.2",
     "vue": "^2.5.2",

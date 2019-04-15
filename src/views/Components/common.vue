@@ -310,10 +310,10 @@ export default {
 
   // tab-bar
   .tab-bar {
+    position: sticky;
     display: flex;
     text-align: center;
     font-size: px2rem(30);
-    position: sticky;
     top: 0;
     z-index: 2;
     margin-bottom: px2rem(10);

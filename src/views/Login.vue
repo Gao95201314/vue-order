@@ -33,7 +33,7 @@
               <input
                 placeholder="验证码"
                 :value="code"
-                @blur="handleGetCodeValue($event)"
+                @change="handleGetCodeValue($event)"
               />
             </section>
             <div id="_umfp"></div>
@@ -98,7 +98,7 @@ export default {
           .then(res => {
             console.log(res.data.body, "短信发送成功!");
             this.$refs["dis"].style.color = "gray";
-            this.codes = res.data.body.codes;
+            this.code = res.data.body.codes;
             cook("secondsremained", 60, 60);
             const countdown = getCookieValue("secondsremained")
               ? getCookieValue("secondsremained")
@@ -111,13 +111,15 @@ export default {
     },
     //登录
     login() {
-      if (
-        this.code === this.codes &&
-        this.phone === "15111521187" &&
-        this.code !== ""
-      ) {
-        this.$router.push("/center");
+      if (this.phone === "15111521187" && this.code !== "") {
         localStorage.setItem("username", this.phone);
+        localStorage.setItem("user", "客户" + this.phone);
+        let redirect = this.$route.query.redirect;
+        if (redirect) {
+          this.$router.push(redirect);
+        } else {
+          this.$router.push("/");
+        }
       } else if (this.code === "") {
         Toast.info("请输入验证码！");
       } else {
